@@ -1,6 +1,5 @@
 # Standard library imports
 from enum import Enum
-import math
 import random
 import sys
 
@@ -8,6 +7,9 @@ import sys
 import pgzero
 import pgzrun
 import pygame
+
+# Local application imports
+from src.utilities import normalize_xy_vector
 
 # Local application constants
 from src.constants import (WIDTH_PX, 
@@ -29,18 +31,9 @@ if pygame_version < MINIMUM_PYGAME_VERSION:
     print(f"This game requires at least version {MINIMUM_PYGAME_VERSION} of Pygame Zero. You have version {pgzero.__version__}. Please upgrade.")
     sys.exit()
 
-def normalised(x, y):
-    # Return a unit vector
-    # Get length of vector (x,y) - math.hypot uses Pythagoras' theorem to get length of hypotenuse
-    # of right-angle triangle with sides of length x and y
-    # todo note on safety
-    length = math.hypot(x, y)
-    return (x / length, y / length)
-
 def sign(x):
     # Returns -1 or 1 depending on whether number is positive or negative
     return -1 if x < 0 else 1
-
 
 # Class for an animation which is displayed briefly whenever the ball bounces
 class Impact(Actor):
@@ -138,7 +131,7 @@ class Ball(Actor):
 
                     # Ensure our direction vector is a unit vector, i.e. represents a distance of the equivalent of
                     # 1 pixel regardless of its angle
-                    self.dx, self.dy = normalised(self.dx, self.dy)
+                    self.dx, self.dy = normalize_xy_vector(self.dx, self.dy)
 
                     # Create an impact effect
                     game.impacts.append(Impact((self.x - new_dir_x * 10, self.y)))
