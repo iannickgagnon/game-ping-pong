@@ -10,3 +10,7 @@ HALF_HEIGHT_PX = HEIGHT_PX // 2
 # Speed of player and AI bats
 PLAYER_SPEED = 6
 MAX_AI_SPEED = 6
+
+# Version
+MINIMUM_PYTHON_VERSION = (3, 5)
+MINIMUM_PYGAME_VERSION = [1, 2]
