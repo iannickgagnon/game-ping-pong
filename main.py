@@ -13,12 +13,12 @@ from src.utilities import normalize_xy_vector
 
 # Local application constants
 from src.constants import (WIDTH_PX, 
-    HALF_WIDTH_PX, 
-    HALF_HEIGHT_PX, 
-    PLAYER_SPEED, 
-    MAX_AI_SPEED,
-    MINIMUM_PYTHON_VERSION,
-    MINIMUM_PYGAME_VERSION)
+                           HALF_WIDTH_PX, 
+                           HALF_HEIGHT_PX, 
+                           PLAYER_SPEED, 
+                           MAX_AI_SPEED,
+                           MINIMUM_PYTHON_VERSION,
+                           MINIMUM_PYGAME_VERSION)
 
 # Python version check
 if sys.version_info < MINIMUM_PYTHON_VERSION:
@@ -30,10 +30,6 @@ pygame_version = [int(s) if s.isnumeric() else s for s in pgzero.__version__.spl
 if pygame_version < MINIMUM_PYGAME_VERSION:
     print(f"This game requires at least version {MINIMUM_PYGAME_VERSION} of Pygame Zero. You have version {pgzero.__version__}. Please upgrade.")
     sys.exit()
-
-def sign(x):
-    # Returns -1 or 1 depending on whether number is positive or negative
-    return -1 if x < 0 else 1
 
 # Class for an animation which is displayed briefly whenever the ball bounces
 class Impact(Actor):

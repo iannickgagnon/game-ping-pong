@@ -28,3 +28,16 @@ def normalize_xy_vector(x, y):
         raise ValueError("Cannot normalize a vector with zero length.")
     
     return (x / length, y / length)
+
+
+def sign(x):
+    """
+    Determine the sign of a number.
+
+    Parameters:
+        x (int or float): The number to check.
+
+    Returns:
+        int: -1 if the number is negative, 1 if the number is positive or zero.
+    """
+    return -1 if x < 0 else 1
