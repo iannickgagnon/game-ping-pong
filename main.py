@@ -9,41 +9,19 @@ import pgzrun
 import pygame
 
 # Local application imports
-from src.utilities import normalize_xy_vector
+from src.utilities import (check_python_pygame_versions, 
+                           normalize_xy_vector)
+from src.impact import Impact
 
 # Local application constants
 from src.constants import (WIDTH_PX, 
                            HALF_WIDTH_PX, 
                            HALF_HEIGHT_PX, 
                            PLAYER_SPEED, 
-                           MAX_AI_SPEED,
-                           MINIMUM_PYTHON_VERSION,
-                           MINIMUM_PYGAME_VERSION)
+                           MAX_AI_SPEED)
 
-# Python version check
-if sys.version_info < MINIMUM_PYTHON_VERSION:
-    print(f"This game requires at least version {MINIMUM_PYTHON_VERSION} of Python. You have version {sys.version_info}. Please upgrade.")
-    sys.exit()
-
-# Pygame version check
-pygame_version = [int(s) if s.isnumeric() else s for s in pgzero.__version__.split('.')]
-if pygame_version < MINIMUM_PYGAME_VERSION:
-    print(f"This game requires at least version {MINIMUM_PYGAME_VERSION} of Pygame Zero. You have version {pgzero.__version__}. Please upgrade.")
-    sys.exit()
-
-# Class for an animation which is displayed briefly whenever the ball bounces
-class Impact(Actor):
-    def __init__(self, pos):
-        super().__init__("blank", pos)
-        self.time = 0
-
-    def update(self):
-        # There are 5 impact sprites numbered 0 to 4. We update to a new sprite every 2 frames.
-        self.image = "impact" + str(self.time // 2)
-
-        # The Game class maintains a list of Impact instances. In Game.update, if the timer for an object
-        # has gone beyond 10, the object is removed from the list.
-        self.time += 1
+# Check Python and Pygame versions
+check_python_pygame_versions()
 
 
 class Ball(Actor):

@@ -1,5 +1,35 @@
 # Standard library imports
 import math
+import sys
+import pgzero
+
+# Local application constants
+from src.constants import (MINIMUM_PYTHON_VERSION, 
+                           MINIMUM_PYGAME_VERSION)
+
+
+def check_python_pygame_versions():
+    """
+    Checks if the current Python and Pygame Zero versions meet the minimum required versions.
+    
+    This function performs the following checks:
+    1. Verifies that the current Python version is at least the minimum required version.
+    2. Verifies that the current Pygame Zero version is at least the minimum required version.
+    
+    If either of the version checks fail, the function prints an error message and exits the program.
+    
+    Raises:
+        SystemExit: If the Python or Pygame Zero version is below the required minimum.
+    """
+
+    # Python version check
+    if sys.version_info < MINIMUM_PYTHON_VERSION:
+        raise SystemExit(f"This game requires at least version {MINIMUM_PYTHON_VERSION} of Python. You have version {sys.version_info}. Please upgrade.")
+
+    # Pygame version check
+    pygame_version = [int(s) if s.isnumeric() else s for s in pgzero.__version__.split('.')]
+    if pygame_version < MINIMUM_PYGAME_VERSION:
+        raise SystemExit(f"This game requires at least version {MINIMUM_PYGAME_VERSION} of Pygame Zero. You have version {pgzero.__version__}. Please upgrade.")
 
 
 def normalize_xy_vector(x, y):
