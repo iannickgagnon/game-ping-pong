@@ -3,6 +3,12 @@ import pgzero, pgzrun, pygame
 import math, sys, random
 from enum import Enum
 
+from src.constants import (WIDTH_PX, 
+    HALF_WIDTH_PX, 
+    HALF_HEIGHT_PX, 
+    PLAYER_SPEED, 
+    MAX_AI_SPEED)
+
 # Check Python version number. sys.version_info gives version as a tuple, e.g. if (3,7,2,'final',0) for version 3.7.2.
 # Unlike many languages, Python can compare two tuples in the same way that you can compare numbers.
 if sys.version_info < (3,5):
@@ -19,16 +25,7 @@ if pgzero_version < [1,2]:
     print("This game requires at least version 1.2 of Pygame Zero. You have version {0}. Please upgrade using the command 'pip3 install --upgrade pgzero'".format(pgzero.__version__))
     sys.exit()
 
-# Set up constants
-WIDTH = 800
-HEIGHT = 480
-TITLE = "Boing!"
 
-HALF_WIDTH = WIDTH // 2
-HALF_HEIGHT = HEIGHT // 2
-
-PLAYER_SPEED = 6
-MAX_AI_SPEED = 6
 
 def normalised(x, y):
     # Return a unit vector
@@ -62,7 +59,7 @@ class Ball(Actor):
     def __init__(self, dx):
         super().__init__("ball", (0,0))
 
-        self.x, self.y = HALF_WIDTH, HALF_HEIGHT
+        self.x, self.y = HALF_WIDTH_PX, HALF_HEIGHT_PX
 
         # dx and dy together describe the direction in which the ball is moving. For example, if dx and dy are 1 and 0,
         # the ball is moving to the right, with no movement up or down. If both values are negative, the ball is moving
@@ -94,13 +91,13 @@ class Ball(Actor):
             # screen, it can bounce off a bat (assuming the bat is in the right position on the Y axis - checked
             # shortly afterwards).
             # We also check the previous X position to ensure that this is the first frame in which the ball crossed the threshold.
-            if abs(self.x - HALF_WIDTH) >= 344 and abs(original_x - HALF_WIDTH) < 344:
+            if abs(self.x - HALF_WIDTH_PX) >= 344 and abs(original_x - HALF_WIDTH_PX) < 344:
 
                 # Now that we know the edge of the ball has crossed the threshold on the x-axis, we need to check to
                 # see if the bat on the relevant side of the arena is at a suitable position on the y-axis for the
                 # ball collide with it.
 
-                if self.x < HALF_WIDTH:
+                if self.x < HALF_WIDTH_PX:
                     new_dir_x = 1
                     bat = game.bats[0]
                 else:
@@ -166,7 +163,7 @@ class Ball(Actor):
                         game.play_sound("hit_veryfast", 1)
 
             # The top and bottom of the arena are 220 pixels from the centre
-            if abs(self.y - HALF_HEIGHT) > 220:
+            if abs(self.y - HALF_HEIGHT_PX) > 220:
                 # Invert vertical direction and apply new dy to y so that the ball is no longer overlapping with the
                 # edge of the arena
                 self.dy = -self.dy
@@ -181,13 +178,13 @@ class Ball(Actor):
 
     def out(self):
         # Has ball gone off the left or right edge of the screen?
-        return self.x < 0 or self.x > WIDTH
+        return self.x < 0 or self.x > WIDTH_PX
 
 
 class Bat(Actor):
     def __init__(self, player, move_func=None):
         x = 40 if player == 0 else 760
-        y = HALF_HEIGHT
+        y = HALF_HEIGHT_PX
         super().__init__("blank", (x, y))
 
         self.player = player
@@ -241,7 +238,7 @@ class Bat(Actor):
         # If the ball is far away, we move towards the centre of the screen (HALF_HEIGHT), on the basis that we don't
         # yet know whether the ball will be in the top or bottom half of the screen when it reaches our position on
         # the X axis. By waiting at a central position, we're as ready as it's possible to be for all eventualities.
-        target_y_1 = HALF_HEIGHT
+        target_y_1 = HALF_HEIGHT_PX
 
         # If the ball is close, we want to move towards its position on the Y axis. We also apply a small offset which
         # is randomly generated each time the ball bounces. This is to make the computer player slightly less robotic
@@ -255,7 +252,7 @@ class Bat(Actor):
         # ball is at the same position as us on the X axis, our target will be target_y_2. If it's 200 pixels away,
         # we'll aim for halfway between target_y_1 and target_y_2. This reflects the idea that as the ball gets closer,
         # we have a better idea of where it's going to end up.
-        weight1 = min(1, x_distance / HALF_WIDTH)
+        weight1 = min(1, x_distance / HALF_WIDTH_PX)
         weight2 = 1 - weight1
 
         target_y = (weight1 * target_y_1) + (weight2 * target_y_2)
@@ -299,7 +296,7 @@ class Game:
         if self.ball.out():
             # Work out which player gained a point, based on whether the ball
             # was on the left or right-hand side of the screen
-            scoring_player = 1 if self.ball.x < WIDTH // 2 else 0
+            scoring_player = 1 if self.ball.x < WIDTH_PX // 2 else 0
             losing_player = 1 - scoring_player
 
             # We use the timer of the player who has just conceded a point to decide when to create a new ball in the
