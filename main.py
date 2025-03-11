@@ -1,8 +1,15 @@
-import pgzero.actor
-import pgzero, pgzrun, pygame
-import math, sys, random
+# Standard library imports
+import math
+import sys
+import random
 from enum import Enum
 
+# Pygame imports
+import pgzero
+import pgzrun
+import pygame
+
+# Local application constants
 from src.constants import (WIDTH_PX, 
     HALF_WIDTH_PX, 
     HALF_HEIGHT_PX, 
